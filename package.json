@@ -16,5 +16,14 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
     "dev": "webpack-dev-server --content-base public"
+  },
+  "dependencies": {
+    "apollo-boost": "^0.4.7",
+    "graphql": "^14.5.8",
+    "node-sass": "^4.13.1",
+    "sass-loader": "^8.0.2",
+    "svelte-apollo": "^0.3.0",
+    "svelte-preprocess-sass": "^0.2.0",
+    "sveltestrap": "^3.3.2"
   }
 }

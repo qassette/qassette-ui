@@ -1,8 +1,10 @@
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 const mode = process.env.NODE_ENV || 'development';
 const prod = mode === 'production';
+
 
 module.exports = {
 	entry: {
@@ -24,21 +26,27 @@ module.exports = {
 		rules: [
 			{
 				test: /\.svelte$/,
-				use: {
-					loader: 'svelte-loader',
-					options: {
-						emitCss: true,
-						hotReload: true
-					}
-				}
+				use: [
+          {
+            loader: 'svelte-loader',
+            options: {
+              emitCss: true,
+              hotReload: true
+            }
+          },
+        ]
+			},
+			{
+				test: /\.scss$/,
+				use: [
+					prod ? MiniCssExtractPlugin.loader : 'style-loader',
+					'css-loader',
+          'sass-loader'
+				]
 			},
 			{
 				test: /\.css$/,
 				use: [
-					/**
-					 * MiniCssExtractPlugin doesn't support HMR.
-					 * For developing, use 'style-loader' instead.
-					 * */
 					prod ? MiniCssExtractPlugin.loader : 'style-loader',
 					'css-loader'
 				]
@@ -46,7 +54,12 @@ module.exports = {
 		]
 	},
 	mode,
-	plugins: [
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'APP_URL': "'http://localhost:2300'"
+      }
+    }),
 		new MiniCssExtractPlugin({
 			filename: '[name].css'
 		})
