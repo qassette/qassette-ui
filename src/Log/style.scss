@@ -1,0 +1,13 @@
+.log {
+  &__box {
+    width: 250px;
+    padding: 15px;
+    color: #ba7186;
+    border: 1px solid #dee2e6;
+    font-style: italic;
+
+    @media (min-width: 768px) {
+      width: 750px;
+    }
+  }
+}
