@@ -56,7 +56,8 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        'APP_URL': "'http://localhost:2300'"
+        'APP_URL': "'http://localhost:2300'",
+        'WS_URL': "'ws://localhost:8181/ws'"
       }
     }),
     new MiniCssExtractPlugin({
