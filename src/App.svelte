@@ -3,6 +3,7 @@
   import { setClient } from 'svelte-apollo';
   import Form from './Form/Form.svelte'
   import Log from './Log/Log.svelte'
+  import initWsClient from './wsclient'
 
   const client = new ApolloClient({
     uri: `${process.env.APP_URL}/graphql`,
@@ -12,11 +13,28 @@
     }
   });
 
+  const onMessage = (evt) => {
+    const data = JSON.parse(evt.data);
+    if (data.type !== "ping" && data.message) {
+      appendToLog(data.message);
+    }
+  }
+  initWsClient(onMessage);
+
   let logEntries = [];
   setClient(client);
 
+  function appendToLog(text) {
+    const currentdate = new Date();
+    const datetime = `${currentdate.getDate()}.${(currentdate.getMonth()+1)}.` +
+      `${currentdate.getFullYear()}@` +
+      `${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}`;
+
+    logEntries = [...logEntries, `${datetime} --- ${text}`];
+  }
+
   function handleMessage(event) {
-    logEntries = [...logEntries, event.detail.text];
+    appendToLog(event.detail.text);
   }
 </script>
 
